@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: ai
+    description: Server-side AI recommendations
 paths:
   /healthz:
     get:
@@ -24,6 +26,94 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /ai/project-health:
+    post:
+      operationId: analyzeProjectHealth
+      tags: [ai]
+      summary: Assess project scope and risk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectHealthInput"
+      responses:
+        "200":
+          description: AI-generated project health assessment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectHealthResult"
+        "400":
+          description: Invalid project details
+        "503":
+          description: AI service is not configured
+  /ai/project-brief:
+    post:
+      operationId: generateProjectBrief
+      tags: [ai]
+      summary: Turn a project description into a structured brief
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProjectBriefInput"
+      responses:
+        "200":
+          description: Structured project brief
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectBriefResult"
+        "400":
+          description: Invalid project description
+        "503":
+          description: AI service is not configured
+  /ai/match:
+    post:
+      operationId: scoreProjectMatch
+      tags: [ai]
+      summary: Score project and freelancer compatibility
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MatchInput"
+      responses:
+        "200":
+          description: AI-generated compatibility assessment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MatchResult"
+        "400":
+          description: Invalid project or freelancer data
+        "503":
+          description: AI service is not configured
+  /ai/skill-gap:
+    post:
+      operationId: generateSkillGapPlan
+      tags: [ai]
+      summary: Generate a preparation plan for project skill gaps
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SkillGapInput"
+      responses:
+        "200":
+          description: Skill compatibility and preparation plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SkillGapResult"
+        "400":
+          description: Invalid skill gap data
+        "503":
+          description: AI service is not configured
 components:
   schemas:
     HealthStatus:
@@ -33,4 +123,108 @@ components:
           type: string
       required:
         - status
+    ProjectHealthInput:
+      type: object
+      required: [title, description, requiredSkills, budget, deadline, projectType, deliverables, experienceLevel]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 160 }
+        description: { type: string, minLength: 10, maxLength: 8000 }
+        requiredSkills: { type: array, items: { type: string }, maxItems: 30 }
+        optionalSkills: { type: array, items: { type: string }, maxItems: 30 }
+        budget: { type: number, minimum: 0 }
+        deadline: { type: string, format: date }
+        projectType: { type: string, maxLength: 80 }
+        deliverables: { type: array, items: { type: string }, maxItems: 40 }
+        experienceLevel: { type: string, enum: [beginner, intermediate, expert, any] }
+    ProjectHealthResult:
+      type: object
+      required: [riskLevel, scopeAssessment, budgetAssessment, deadlineAssessment, missingInformation, recommendations]
+      properties:
+        riskLevel: { type: string, enum: [low, medium, high] }
+        scopeAssessment: { type: string }
+        budgetAssessment: { type: string }
+        deadlineAssessment: { type: string }
+        missingInformation: { type: array, items: { type: string } }
+        recommendations: { type: array, items: { type: string } }
+    ProjectBriefInput:
+      type: object
+      required: [description]
+      properties:
+        description: { type: string, minLength: 20, maxLength: 8000 }
+    ProjectBriefResult:
+      type: object
+      required: [projectGoal, mustHave, niceToHave, requiredSkills, deliverables, experienceLevel, risks, questions]
+      properties:
+        projectGoal: { type: string }
+        mustHave: { type: array, items: { type: string } }
+        niceToHave: { type: array, items: { type: string } }
+        requiredSkills: { type: array, items: { type: string } }
+        deliverables: { type: array, items: { type: string } }
+        experienceLevel: { type: string, enum: [beginner, intermediate, expert, any] }
+        risks: { type: array, items: { type: string } }
+        questions: { type: array, items: { type: string } }
+    MatchInput:
+      type: object
+      required: [project, freelancer]
+      properties:
+        project:
+          type: object
+          required: [title, description, requiredSkills, budget, deadline]
+          properties:
+            title: { type: string }
+            description: { type: string }
+            requiredSkills: { type: array, items: { type: string } }
+            budget: { type: number }
+            deadline: { type: string, format: date }
+        freelancer:
+          type: object
+          required: [name, skills, experienceYears, availability, rate, rating, portfolioSummary]
+          properties:
+            name: { type: string }
+            skills: { type: array, items: { type: string } }
+            experienceYears: { type: integer, minimum: 0 }
+            availability: { type: string }
+            rate: { type: number, minimum: 0 }
+            rating: { type: number, minimum: 0, maximum: 5 }
+            portfolioSummary: { type: string }
+    MatchResult:
+      type: object
+      required: [matchScore, skillsScore, experienceScore, budgetScore, availabilityScore, portfolioScore, feedbackScore, matchingSkills, missingSkills, reason, recommendation]
+      properties:
+        matchScore: { type: integer, minimum: 0, maximum: 100 }
+        skillsScore: { type: integer, minimum: 0, maximum: 100 }
+        experienceScore: { type: integer, minimum: 0, maximum: 100 }
+        budgetScore: { type: integer, minimum: 0, maximum: 100 }
+        availabilityScore: { type: integer, minimum: 0, maximum: 100 }
+        portfolioScore: { type: integer, minimum: 0, maximum: 100 }
+        feedbackScore: { type: integer, minimum: 0, maximum: 100 }
+        matchingSkills: { type: array, items: { type: string } }
+        missingSkills: { type: array, items: { type: string } }
+        reason: { type: string }
+        recommendation: { type: string }
+    SkillGapInput:
+      type: object
+      required: [projectTitle, requiredSkills, freelancerSkills]
+      properties:
+        projectTitle: { type: string }
+        requiredSkills: { type: array, items: { type: string }, maxItems: 30 }
+        freelancerSkills: { type: array, items: { type: string }, maxItems: 30 }
+    PreparationStep:
+      type: object
+      required: [skill, topics, order, effort, tip]
+      properties:
+        skill: { type: string }
+        topics: { type: array, items: { type: string } }
+        order: { type: integer, minimum: 1 }
+        effort: { type: string }
+        tip: { type: string }
+    SkillGapResult:
+      type: object
+      required: [matchScore, matchingSkills, missingSkills, preparationPlan, readinessSummary]
+      properties:
+        matchScore: { type: integer, minimum: 0, maximum: 100 }
+        matchingSkills: { type: array, items: { type: string } }
+        missingSkills: { type: array, items: { type: string } }
+        preparationPlan: { type: array, items: { $ref: "#/components/schemas/PreparationStep" } }
+        readinessSummary: { type: string }
 
