@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "FreelanceMatch"
+description = "An AI-powered freelance matching platform helping clients and freelancers find compatible work through project health checks, verified skills, transparent applications, and safer collaboration."
+version = "1.0.0"
+id = "artifacts/freelance-match"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 20551
+
+[services.development]
+run = "pnpm --filter @workspace/freelance-match run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/freelance-match", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/freelance-match/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20551"
+BASE_PATH = "/"

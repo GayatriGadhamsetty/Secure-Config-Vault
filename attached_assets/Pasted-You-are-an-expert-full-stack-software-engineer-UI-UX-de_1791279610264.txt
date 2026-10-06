@@ -1,0 +1,1513 @@
+You are an expert full-stack software engineer, UI/UX designer, database architect, and AI application developer.
+
+Build a complete production-quality full-stack web application called:
+
+"FreelanceMatch"
+
+Tagline:
+"Find the right person. Build the right project."
+
+IMPORTANT:
+Do not build a generic freelancer marketplace clone.
+The core differentiator is AI-powered project compatibility, trust, safety, and two-way matching.
+
+The application connects:
+1. Clients who have projects
+2. Freelancers who are looking for projects
+
+The platform should help both sides find a suitable match based on:
+- Skills
+- Experience
+- Portfolio relevance
+- Budget
+- Availability
+- Deadline
+- Project requirements
+- Ratings and feedback
+- Skill verification
+
+The platform should also help prevent problems before and during a project.
+
+==================================================
+1. TECH STACK
+==================================================
+
+Frontend:
+- React.js with Vite
+- React Router
+- Tailwind CSS
+- Lucide React icons
+- Axios or Fetch API
+
+Backend:
+- Node.js
+- Express.js
+- REST APIs
+- JWT authentication
+- bcrypt password hashing
+- Zod validation
+- Proper authentication middleware
+- Proper error handling
+
+Database:
+- Supabase PostgreSQL
+
+AI:
+- Google Gemini API
+- Use the official Google GenAI SDK
+- Gemini must ONLY be called from the backend
+- Never expose the Gemini API key to the frontend
+- AI responses must use structured JSON
+- Validate AI responses using Zod
+
+Deployment-ready:
+- Frontend should be deployable to Vercel
+- Backend should be deployable to Render
+- Make the application compatible with environment variables
+
+==================================================
+2. SECURITY
+==================================================
+
+NEVER hardcode secrets.
+
+Use environment variables:
+
+SUPABASE_URL=YOUR_SUPABASE_URL
+SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+JWT_SECRET=YOUR_JWT_SECRET
+
+Create a .env.example file containing placeholders only.
+
+Never put real API keys in:
+- React frontend
+- source code
+- GitHub
+- README
+- client-side JavaScript
+
+Gemini API calls must happen only on the Express backend.
+
+Validate:
+- Request body
+- Query parameters
+- Route parameters
+- Authentication data
+- AI responses
+
+Users must only be able to access their own private data.
+
+Use secure password hashing with bcrypt.
+
+Use JWT authentication for protected routes.
+
+==================================================
+3. CORE PRODUCT IDEA
+==================================================
+
+FreelanceMatch is not simply:
+
+"Find a freelancer."
+
+It should provide:
+
+FIND
+→ VERIFY
+→ MATCH
+→ COMMUNICATE
+→ WORK
+→ REVIEW
+
+The core philosophy is:
+
+"The best freelancer is not necessarily the best freelancer for every project."
+
+The platform should identify the BEST FIT for a specific project.
+
+It should analyze:
+- Skills
+- Experience
+- Budget
+- Availability
+- Portfolio
+- Previous feedback
+- Project similarity
+- Deadline compatibility
+
+==================================================
+4. USER ROLES
+==================================================
+
+There are two roles:
+
+CLIENT
+and
+FREELANCER
+
+A user selects their role during registration.
+
+Users must not be able to access role-specific actions they are not authorized to use.
+
+==================================================
+5. AUTHENTICATION
+==================================================
+
+Create:
+
+Registration page
+Login page
+Logout
+Forgot password UI
+Protected routes
+JWT authentication
+Password hashing
+
+Registration fields:
+- Full name
+- Email
+- Password
+- Role
+- Optional profile photo
+
+After registration:
+CLIENT → Client Dashboard
+FREELANCER → Freelancer Dashboard
+
+Create authentication middleware.
+
+Persist authentication state appropriately.
+
+==================================================
+6. LANDING PAGE
+==================================================
+
+Create a beautiful modern landing page.
+
+Hero:
+
+"Find the right person.
+Build the right project."
+
+Subtitle:
+
+"AI-powered matching that considers skills, budget, availability, experience and project fit."
+
+Primary buttons:
+- Find Freelancers
+- Find Projects
+
+Sections:
+1. How It Works
+2. AI-Powered Matching
+3. Project Health Check
+4. Skill Gap Detection
+5. Freshers Can Prove Their Skills
+6. Safe & Transparent Collaboration
+7. Mutual Reviews
+8. Call & Messaging
+9. Final CTA
+
+Design should be clean, premium and modern.
+
+==================================================
+7. UI/UX DESIGN
+==================================================
+
+The website must look like a polished modern SaaS product.
+
+Design principles:
+- Clean
+- Minimal
+- Attractive
+- Professional
+- Spacious
+- Responsive
+- Easy to understand
+- Not overcrowded
+
+Use:
+- Rounded cards
+- Soft shadows
+- Good typography hierarchy
+- Consistent spacing
+- Subtle gradients
+- Elegant icons
+- Clear buttons
+- Modern dashboard cards
+- Status badges
+- Match-score visualizations
+- Progress bars
+- Clean tables where appropriate
+
+Avoid:
+- Excessive animations
+- Too many colors
+- Huge text everywhere
+- Cluttered dashboards
+- Generic template appearance
+- Excessive gradients
+- Unnecessary decorative elements
+
+Use a consistent design system throughout the entire application.
+
+Primary visual style:
+Modern AI SaaS + professional marketplace.
+
+Suggested palette:
+- Deep navy / near-black for primary text
+- White / off-white backgrounds
+- Indigo / violet as primary accent
+- Green for success
+- Amber for warnings
+- Red only for danger
+- Muted gray for secondary information
+
+Use accessible contrast.
+
+Create responsive layouts for:
+- Desktop
+- Tablet
+- Mobile
+
+==================================================
+8. CLIENT PAGES
+==================================================
+
+Create the following client pages:
+
+/client/dashboard
+/client/projects
+/client/projects/create
+/client/projects/:id
+/client/freelancers
+/client/freelancers/:id
+/client/applications
+/client/messages
+/client/calls
+/client/active-projects
+/client/feedback
+/client/notifications
+/client/settings
+
+--------------------------------------------------
+CLIENT DASHBOARD
+--------------------------------------------------
+
+Show:
+
+- Welcome message
+- Active projects
+- Recommended freelancers
+- Recent applications
+- Upcoming calls
+- Project health alerts
+- Notifications
+
+Include cards such as:
+
+"3 Active Projects"
+"8 Recommended Freelancers"
+"2 Pending Applications"
+"1 Upcoming Call"
+
+--------------------------------------------------
+CREATE PROJECT
+--------------------------------------------------
+
+Fields:
+
+- Project title
+- Description
+- Required skills
+- Budget
+- Deadline
+- Project type
+- Deliverables
+- Optional skills
+- Experience level
+
+Button:
+
+"Analyze Project with AI"
+
+--------------------------------------------------
+AI PROJECT HEALTH CHECK
+--------------------------------------------------
+
+After project creation or analysis, Gemini should analyze:
+
+- Scope
+- Budget
+- Deadline
+- Requirements
+- Complexity
+- Missing information
+
+Return structured JSON.
+
+Show:
+
+Project Health:
+LOW / MEDIUM / HIGH RISK
+
+Budget:
+Realistic / Possibly Low / Possibly High
+
+Deadline:
+Realistic / Aggressive / Unrealistic
+
+Scope:
+Simple / Moderate / Complex
+
+Recommendations:
+A list of actionable suggestions.
+
+Example:
+
+"Your project contains many features for a 5-day deadline."
+
+"Consider extending the deadline to 10–14 days."
+
+"Payment integration adds technical complexity."
+
+Do not claim that AI estimates are guaranteed facts.
+Clearly label them as AI recommendations.
+
+--------------------------------------------------
+AI PROJECT BRIEF
+--------------------------------------------------
+
+Convert a natural-language project description into:
+
+Project Goal
+Must Have
+Nice to Have
+Required Skills
+Expected Deliverables
+Suggested Experience Level
+Potential Risks
+Questions for Freelancer
+
+Display the result in a clean card layout.
+
+--------------------------------------------------
+FIND FREELANCERS
+--------------------------------------------------
+
+Allow:
+
+Search
+Filter by skills
+Filter by budget
+Filter by experience
+Filter by availability
+Filter by rating
+Sort by match score
+
+Show freelancer cards.
+
+Each card:
+
+Profile photo
+Name
+Headline
+Skills
+Rating
+Availability
+Expected rate
+Verification badges
+AI match percentage
+
+Example:
+
+93% Best Fit
+
+--------------------------------------------------
+FREELANCER MATCH DETAILS
+--------------------------------------------------
+
+Show:
+
+Overall Match Score
+
+Breakdown:
+
+Skills Match
+Experience Match
+Budget Match
+Availability Match
+Portfolio Match
+Feedback Match
+
+Show:
+
+"Why this freelancer?"
+
+Gemini-generated explanation.
+
+Also show:
+- Matching skills
+- Missing skills
+- Relevant portfolio
+- Reviews
+- Availability
+
+Actions:
+- Message
+- Request Call
+- Invite to Project
+
+==================================================
+9. FREELANCER PAGES
+==================================================
+
+Create:
+
+/freelancer/dashboard
+/freelancer/profile
+/freelancer/demo-work
+/freelancer/projects
+/freelancer/projects/:id
+/freelancer/applications
+/freelancer/skill-gap
+/freelancer/messages
+/freelancer/calls
+/freelancer/active-projects
+/freelancer/feedback
+/freelancer/notifications
+/freelancer/settings
+
+--------------------------------------------------
+FREELANCER DASHBOARD
+--------------------------------------------------
+
+Show:
+
+Welcome message
+AI recommended projects
+Active projects
+Pending applications
+Upcoming calls
+Recent feedback
+Skill improvement suggestions
+
+Example:
+
+"Your Best Match Today"
+
+E-Commerce Website
+93% Match
+
+--------------------------------------------------
+FREELANCER PROFILE
+--------------------------------------------------
+
+Fields:
+
+Name
+Profile photo
+Bio
+Skills
+Experience
+Education
+Availability
+Expected rate
+Portfolio
+Demo projects
+Verified skills
+Client reviews
+Average rating
+
+Clearly distinguish:
+
+Professional Client Work
+
+from:
+
+Demo / Personal Work
+
+--------------------------------------------------
+DEMO WORK FOR FRESHERS
+--------------------------------------------------
+
+This is a major feature.
+
+Create a dedicated Demo Work section.
+
+Freshers can upload/add:
+
+- Project title
+- Description
+- Technologies
+- Screenshots
+- GitHub link
+- Live demo link
+- What they built
+- Problems solved
+
+Every project must clearly show:
+
+"Demo / Personal Project"
+
+Never represent demo work as paid client work.
+
+Example:
+
+E-Commerce Website
+Demo Project
+
+React
+Node.js
+MongoDB
+
+[View Demo]
+
+This helps freshers demonstrate ability even without professional experience.
+
+--------------------------------------------------
+FIND PROJECTS
+--------------------------------------------------
+
+Freelancers can:
+
+Search
+Filter
+Sort
+
+Filters:
+- Skills
+- Budget
+- Deadline
+- Experience level
+- Project type
+
+Each project card should show:
+
+Title
+Short description
+Required skills
+Budget
+Deadline
+AI Match Score
+Risk badge
+
+Example:
+
+93% Match
+Low Project Risk
+
+--------------------------------------------------
+SKILL GAP DETECTOR
+--------------------------------------------------
+
+For each project, compare:
+
+Freelancer skills
+vs
+Project requirements
+
+Example:
+
+Current skills:
+React ✓
+Node.js ✓
+MongoDB ✓
+
+Missing:
+Stripe ✗
+
+Show:
+
+"78% Match"
+
+Then offer:
+
+"Generate Preparation Plan"
+
+Gemini creates a short learning/preparation plan.
+
+The plan should contain:
+- Missing skill
+- Topics to learn
+- Suggested order
+- Estimated preparation effort
+- Project readiness tips
+
+Do not guarantee learning time.
+
+==================================================
+10. AI MATCHING ENGINE
+==================================================
+
+Create backend endpoint:
+
+POST /api/ai/match
+
+Input:
+Project data
+Freelancer data
+
+Gemini must return structured JSON similar to:
+
+{
+  "matchScore": 93,
+  "skillsScore": 95,
+  "experienceScore": 85,
+  "budgetScore": 100,
+  "availabilityScore": 95,
+  "portfolioScore": 90,
+  "feedbackScore": 92,
+  "matchingSkills": [],
+  "missingSkills": [],
+  "reason": "",
+  "recommendation": ""
+}
+
+Validate with Zod.
+
+Do not allow arbitrary AI output to directly control database operations.
+
+==================================================
+11. AI PROJECT HEALTH ENGINE
+==================================================
+
+Create backend endpoint:
+
+POST /api/ai/project-health
+
+Return:
+
+{
+  "riskLevel": "medium",
+  "scopeAssessment": "",
+  "budgetAssessment": "",
+  "deadlineAssessment": "",
+  "missingInformation": [],
+  "recommendations": []
+}
+
+Validate with Zod.
+
+==================================================
+12. AI SKILL GAP ENGINE
+==================================================
+
+Create:
+
+POST /api/ai/skill-gap
+
+Return:
+
+{
+  "matchScore": 78,
+  "matchingSkills": [],
+  "missingSkills": [],
+  "preparationPlan": [],
+  "readinessSummary": ""
+}
+
+==================================================
+13. PROJECT RISK / SAFETY
+==================================================
+
+Create an AI-assisted risk indicator.
+
+Analyze project descriptions for potential warning signs such as:
+
+- Extremely unrealistic payment
+- Very vague requirements
+- Unrealistic deadline
+- Suspicious requests
+- Requests to move communication/payment outside the platform
+
+Return:
+
+LOW / MEDIUM / HIGH
+
+IMPORTANT:
+Call this a "risk indicator", not a definitive scam detector.
+
+Explain:
+
+"This is an AI-generated risk assessment and should not be treated as proof of fraud."
+
+==================================================
+14. MESSAGING
+==================================================
+
+Create a messaging system.
+
+Users can message only where appropriate.
+
+Features:
+- Conversation list
+- Chat window
+- Message timestamps
+- Unread indicator
+- Project context
+
+Keep UI clean.
+
+==================================================
+15. CALL FEATURE
+==================================================
+
+Add client-freelancer call functionality.
+
+Workflow:
+
+Client:
+Request Call
+
+Freelancer:
+Accept / Reject
+
+If accepted:
+Schedule call
+
+Show:
+Date
+Time
+Project
+Participants
+
+Button:
+"Join Call"
+
+Build the application so a video/audio meeting integration can be connected.
+
+For the initial implementation, create a clean call scheduling and meeting-link workflow rather than attempting to build a complete video conferencing infrastructure.
+
+Store:
+- caller
+- receiver
+- project
+- scheduled time
+- meeting link
+- status
+
+Statuses:
+requested
+accepted
+rejected
+completed
+cancelled
+
+==================================================
+16. AI MEETING SUMMARY
+==================================================
+
+If meeting notes/transcript are available, provide an AI summary.
+
+Show:
+
+Project
+Agreed deliverables
+Deadline
+Budget
+Revision count
+Pending decisions
+Action items
+
+Clearly indicate:
+
+"AI-generated meeting summary"
+
+Allow users to review before saving it as an official project note.
+
+==================================================
+17. ACTIVE PROJECT MANAGEMENT
+==================================================
+
+Once a client and freelancer connect:
+
+Create an Active Project page.
+
+Show:
+
+Project title
+Client
+Freelancer
+Deadline
+Budget
+Progress
+Deliverables
+Status
+
+Statuses:
+
+Not Started
+In Progress
+Review
+Completed
+Cancelled
+
+Deliverables can have:
+
+Pending
+In Progress
+Completed
+
+Implement CRUD operations.
+
+==================================================
+18. SCOPE GUARD
+==================================================
+
+Store the original project scope.
+
+If additional requirements are added:
+
+Show:
+
+"Possible Scope Change Detected"
+
+Display:
+
+Original scope
+New request
+Potential impact
+Suggested budget adjustment
+Suggested deadline adjustment
+
+IMPORTANT:
+AI suggestions are recommendations only.
+
+Both client and freelancer must approve a scope change.
+
+Store:
+- original scope
+- requested change
+- proposed adjustment
+- approval status
+- timestamps
+
+==================================================
+19. MUTUAL FEEDBACK SYSTEM
+==================================================
+
+After project completion:
+
+CLIENT can review FREELANCER.
+
+FREELANCER can review CLIENT.
+
+Client review categories:
+
+Technical Skill
+Communication
+Deadline
+Professionalism
+Overall Rating
+
+Freelancer review categories:
+
+Requirement Clarity
+Communication
+Payment Reliability
+Professionalism
+Overall Rating
+
+Allow written feedback.
+
+Calculate average ratings.
+
+Show reviews on profiles.
+
+==================================================
+20. AI REVIEW SUMMARY
+==================================================
+
+When multiple reviews exist, optionally generate:
+
+"Client Feedback Summary"
+
+Example:
+
+"Clients frequently appreciate this freelancer's communication and timely delivery."
+
+Also:
+
+"Areas for improvement frequently mentioned:
+- Faster response times"
+
+Clearly label this as:
+
+AI-generated review summary.
+
+==================================================
+21. SEARCH AND FILTERING
+==================================================
+
+Implement actual backend-supported search/filtering.
+
+Freelancers:
+Search projects
+
+Clients:
+Search freelancers
+
+Filters should work through API query parameters.
+
+Do not implement fake frontend-only filtering if database filtering is expected.
+
+==================================================
+22. DATABASE DESIGN
+==================================================
+
+Use Supabase PostgreSQL.
+
+Create tables for:
+
+users
+profiles
+freelancer_profiles
+client_profiles
+skills
+freelancer_skills
+projects
+project_skills
+applications
+matches
+demo_projects
+portfolio_items
+messages
+call_requests
+active_projects
+deliverables
+scope_changes
+reviews
+notifications
+ai_project_analysis
+ai_meeting_summaries
+
+Use appropriate foreign keys.
+
+Add:
+created_at
+updated_at
+
+where appropriate.
+
+Use Supabase Row Level Security where appropriate.
+
+Users must only access records they are authorized to access.
+
+==================================================
+23. CRUD REQUIREMENTS
+==================================================
+
+Implement real CRUD for:
+
+Projects
+Freelancer profiles
+Demo projects
+Portfolio items
+Applications
+Deliverables
+Scope changes
+Reviews
+
+Do not create fake static data for the main workflow.
+
+Seed a small amount of demo data only if needed for presentation.
+
+==================================================
+24. API STRUCTURE
+==================================================
+
+Organize backend routes:
+
+/api/auth
+/api/users
+/api/freelancers
+/api/clients
+/api/projects
+/api/applications
+/api/matches
+/api/demo-work
+/api/messages
+/api/calls
+/api/active-projects
+/api/deliverables
+/api/scope-changes
+/api/reviews
+/api/notifications
+/api/ai
+
+Use controllers/services where appropriate.
+
+Keep frontend and backend code organized.
+
+Suggested structure:
+
+/client
+/server
+
+==================================================
+25. ERROR HANDLING
+==================================================
+
+Every API should return clean JSON.
+
+Handle:
+
+400
+401
+403
+404
+409
+422
+500
+
+Show friendly frontend error messages.
+
+Never expose sensitive backend errors to users.
+
+==================================================
+26. LOADING STATES
+==================================================
+
+Every AI action should have a loading state.
+
+Example:
+
+"Analyzing project..."
+
+"Finding best matches..."
+
+"Generating preparation plan..."
+
+Use skeleton loaders or elegant spinners.
+
+Never leave blank screens while requests are processing.
+
+==================================================
+27. EMPTY STATES
+==================================================
+
+Create useful empty states.
+
+Examples:
+
+"No projects yet."
+
+"No freelancers match your criteria."
+
+"No calls scheduled."
+
+"No feedback yet."
+
+"No demo work added."
+
+Include useful CTA buttons.
+
+==================================================
+28. NOTIFICATIONS
+==================================================
+
+Create notifications for:
+
+New project match
+New application
+Application accepted
+Call request
+Call accepted
+New message
+Scope change
+Project deadline
+New feedback
+
+==================================================
+29. LOGOUT
+==================================================
+
+Provide Logout in the profile/settings menu.
+
+On logout:
+- Clear authentication state
+- Clear stored JWT/token safely
+- Redirect to Login or Home
+
+==================================================
+30. RESPONSIVENESS
+==================================================
+
+The entire website must work on:
+
+Desktop
+Tablet
+Mobile
+
+Dashboard navigation should become a mobile menu/sidebar.
+
+Cards should resize properly.
+
+Tables should become responsive.
+
+==================================================
+31. ACCESSIBILITY
+==================================================
+
+Use:
+- Semantic HTML
+- Proper labels
+- Keyboard navigation where practical
+- Accessible buttons
+- Good contrast
+- Meaningful error messages
+- aria labels where necessary
+
+==================================================
+32. PERFORMANCE
+==================================================
+
+Avoid unnecessary API calls.
+
+Use pagination where appropriate.
+
+Do not send huge datasets to the frontend.
+
+Only call Gemini when required.
+
+Cache or persist AI results when appropriate rather than repeatedly calling Gemini for identical data.
+
+==================================================
+33. DEMO EXPERIENCE
+==================================================
+
+Create realistic demo data for presentation.
+
+Include:
+
+At least 3 freelancers:
+- One experienced
+- One intermediate
+- One fresher with demo projects
+
+At least 3 projects:
+- Different skills
+- Different budgets
+- Different deadlines
+
+Include sample reviews.
+
+Include sample applications.
+
+Include sample calls.
+
+Clearly mark seeded data as demo data if appropriate.
+
+==================================================
+34. FRESHER EXPERIENCE
+==================================================
+
+Make freshers an important part of the platform.
+
+A fresher should not be rejected simply because:
+
+"Experience = 0"
+
+Instead, evaluate:
+
+Skills
+Demo work
+Portfolio
+Practical verification
+Availability
+Project compatibility
+
+Show:
+
+"Fresh Talent"
+
+for freelancers with no professional experience but demonstrated skills.
+
+Example:
+
+"0 years professional experience"
+"3 verified demo projects"
+"React practical test completed"
+
+==================================================
+35. CLIENT EXPERIENCE
+==================================================
+
+The client should be able to:
+
+Register
+Login
+Create project
+Analyze project
+Find freelancers
+View AI matches
+View profiles
+View demo work
+Message freelancer
+Request call
+Invite freelancer
+Manage active projects
+Approve scope changes
+Review freelancer
+
+==================================================
+36. FREELANCER EXPERIENCE
+==================================================
+
+The freelancer should be able to:
+
+Register
+Login
+Create profile
+Add skills
+Add experience
+Add demo work
+Add portfolio
+View recommended projects
+View AI match score
+See skill gaps
+Generate preparation plan
+Apply
+Message client
+Accept/reject call
+Manage active project
+Review client
+Receive feedback
+
+==================================================
+37. NAVIGATION
+==================================================
+
+Use role-based sidebar navigation.
+
+CLIENT:
+
+Dashboard
+Projects
+Find Freelancers
+Applications
+Messages
+Calls
+Active Projects
+Feedback
+Notifications
+Settings
+Logout
+
+FREELANCER:
+
+Dashboard
+My Profile
+Demo Work
+Find Projects
+Applications
+Skill Gaps
+Messages
+Calls
+Active Projects
+Feedback
+Notifications
+Settings
+Logout
+
+==================================================
+38. DASHBOARD VISUAL DESIGN
+==================================================
+
+Client dashboard:
+
+Top:
+Welcome + notification
+
+Stats:
+Active Projects
+Recommended Freelancers
+Pending Applications
+Upcoming Calls
+
+Main:
+Project Health Alerts
+Best Freelancer Matches
+Recent Activity
+
+Freelancer dashboard:
+
+Top:
+Welcome + profile completion
+
+Stats:
+Recommended Projects
+Applications
+Active Projects
+Average Rating
+
+Main:
+Best Matches
+Skill Gap Suggestions
+Recent Feedback
+Upcoming Calls
+
+==================================================
+39. MATCH SCORE UI
+==================================================
+
+Create an attractive match visualization.
+
+Example:
+
+93%
+BEST FIT
+
+Skills      95%
+Budget     100%
+Experience  85%
+Availability 95%
+Portfolio   90%
+
+Use a circular progress indicator or elegant score card.
+
+Use green for strong matches.
+
+Use amber for moderate matches.
+
+Use red only for poor matches.
+
+==================================================
+40. AI TRANSPARENCY
+==================================================
+
+Every AI result should clearly say:
+
+"AI-generated recommendation"
+
+AI should explain its reasoning.
+
+Never present AI output as guaranteed truth.
+
+Allow users to make the final decision.
+
+==================================================
+41. README
+==================================================
+
+Create a professional README containing:
+
+Project overview
+Features
+Tech stack
+Architecture
+Database schema
+AI integration
+Environment variables
+Local setup
+Run instructions
+Deployment instructions
+Security notes
+Demo credentials
+Screenshots placeholder
+Future improvements
+
+Do NOT put real secrets in README.
+
+==================================================
+42. .ENV.EXAMPLE
+==================================================
+
+Create:
+
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+GEMINI_API_KEY=
+JWT_SECRET=
+
+Do not include actual secrets.
+
+==================================================
+43. FINAL QUALITY REQUIREMENT
+==================================================
+
+Do not stop after generating the UI.
+
+Actually implement:
+
+Frontend
+Backend
+Database
+Authentication
+CRUD
+AI APIs
+Validation
+Role-based access
+Search
+Filtering
+Messaging
+Call scheduling
+Reviews
+Notifications
+
+Make the main end-to-end workflow functional.
+
+Test:
+
+1. Register client
+2. Login
+3. Create project
+4. Run AI project analysis
+5. Find freelancers
+6. Generate AI match
+7. View freelancer profile
+8. Request call
+9. Send message
+10. Create/accept application
+11. Start active project
+12. Add deliverables
+13. Test scope change
+14. Complete project
+15. Submit mutual reviews
+16. Logout
+17. Register freelancer
+18. Add demo work
+19. Find matching project
+20. Generate skill-gap analysis
+
+Fix all obvious runtime errors.
+
+==================================================
+44. MOST IMPORTANT PRODUCT PRINCIPLE
+==================================================
+
+Do not make this look like a copy of Upwork or Fiverr.
+
+The visual identity and product experience should communicate:
+
+"AI-powered project compatibility and trust."
+
+Core product journey:
+
+AUTHENTICATE
+→ BUILD PROFILE
+→ CREATE/SELECT PROJECT
+→ AI PROJECT HEALTH CHECK
+→ AI BEST-FIT MATCHING
+→ VERIFY / VIEW DEMO WORK
+→ MESSAGE / CALL
+→ AGREEMENT
+→ ACTIVE PROJECT
+→ SCOPE PROTECTION
+→ COMPLETION
+→ MUTUAL FEEDBACK
+
+The website should feel polished, trustworthy, modern, intelligent and easy to use.
+
+Prioritize functionality and reliability over unnecessary features.
+
+If any feature is too complex to fully implement during the first build, create a clean extensible architecture and implement the essential workflow first.
+
+Do not replace real backend functionality with fake buttons.
+
+Do not expose secrets.
+
+Do not use fake AI responses when Gemini is configured.
+
+Build the application now.
